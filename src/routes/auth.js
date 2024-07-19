@@ -3,6 +3,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const verify = require('../middleware/verifyToken');
 const InstitutionAdmin = require('../models/InstitutionAdmin');
 
 // Register
@@ -43,4 +44,33 @@ router.post('/login', async (req, res) => {
   res.header('auth-token', token).send({ token });
 });
 
+// Update admin profile
+router.put('/profile', verify, async (req, res) => {
+  const { name, email, instituteName, instituteRegistrationNumber, password } = req.body;
+
+  try {
+    // Find the admin by ID from the token
+    const admin = await InstitutionAdmin.findById(req.user._id);
+    if (!admin) return res.status(404).send({ message: 'Admin not found' });
+
+    // Update fields
+    admin.name = name || admin.name;
+    admin.email = email || admin.email;
+    admin.instituteName = instituteName || admin.instituteName;
+    admin.instituteRegistrationNumber = instituteRegistrationNumber || admin.instituteRegistrationNumber;
+
+    // Update password if provided
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      admin.password = await bcrypt.hash(password, salt);
+    }
+
+    await admin.save();
+    res.send(admin);
+  } catch (err) {
+    res.status(400).send({ message: err.message });
+  }
+});
+
 module.exports = router;
+
