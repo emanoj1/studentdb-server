@@ -32,15 +32,15 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   // Check if the email exists
   const admin = await InstitutionAdmin.findOne({ email: req.body.email });
-  if (!admin) return res.status(400).send('Email is not found');
+  if (!admin) return res.status(400).send({ message: 'Email is not found' });
 
-  // Password is correct
+  // Check if the password is correct
   const validPass = await bcrypt.compare(req.body.password, admin.password);
-  if (!validPass) return res.status(400).send('Invalid password');
+  if (!validPass) return res.status(400).send({ message: 'Invalid password' });
 
   // Create and assign a token
-  const token = jwt.sign({ _id: admin._id }, process.env.TOKEN_SECRET);
-  res.header('auth-token', token).send(token);
+  const token = jwt.sign({ _id: admin._id }, process.env.JWT_SECRET);
+  res.header('auth-token', token).send({ token });
 });
 
 module.exports = router;
