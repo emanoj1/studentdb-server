@@ -52,5 +52,30 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Update a student by ID
+router.put('/:id', async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) {
+      return res.status(404).send({ message: 'Student not found' });
+    }
+
+    // Update student fields
+    student.name = req.body.name || student.name;
+    student.dateOfBirth = req.body.dateOfBirth || student.dateOfBirth;
+    student.gender = req.body.gender || student.gender;
+    student.phone = req.body.phone || student.phone;
+    student.email = req.body.email || student.email;
+    student.address = req.body.address || student.address;
+    student.dateOfEnrollment = req.body.dateOfEnrollment || student.dateOfEnrollment;
+    student.areaOfStudy = req.body.areaOfStudy || student.areaOfStudy;
+
+    await student.save();
+    res.send(student);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
 module.exports = router;
 
