@@ -53,7 +53,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Update a student by ID
-router.put('/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   try {
     const student = await Student.findById(req.params.id);
     if (!student) {
