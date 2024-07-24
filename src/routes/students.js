@@ -63,6 +63,20 @@ router.put('/:id', verify, async (req, res) => {
   }
 });
 
+// Delete a student
+router.delete('/:id', verify, async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    await student.remove();
+    res.json({ message: 'Student deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;
 
 
