@@ -38,7 +38,30 @@ router.post('/add-student', verify, async (req, res) => {
   }
 });
 
-// Update and delete routes...
+// Update a student
+router.put('/:id', verify, async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    // Update student fields
+    student.name = req.body.name || student.name;
+    student.dateOfBirth = req.body.dateOfBirth || student.dateOfBirth;
+    student.gender = req.body.gender || student.gender;
+    student.phone = req.body.phone || student.phone;
+    student.email = req.body.email || student.email;
+    student.address = req.body.address || student.address;
+    student.dateOfEnrollment = req.body.dateOfEnrollment || student.dateOfEnrollment;
+    student.areaOfStudy = req.body.areaOfStudy || student.areaOfStudy;
+
+    await student.save();
+    res.json(student);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
 module.exports = router;
 
