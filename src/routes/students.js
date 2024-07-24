@@ -71,16 +71,16 @@ router.delete('/:id', verify, async (req, res) => {
 
     const student = await Student.findById(studentId);
     if (!student) {
-      console.error('Student not found');
+      console.error(`Student with ID ${studentId} not found`);
       return res.status(404).json({ message: 'Student not found' });
     }
 
-    await student.remove();
-    console.log('Student deleted successfully');
+    await Student.deleteOne({ _id: studentId });
+    console.log(`Student with ID ${studentId} deleted successfully`);
     res.json({ message: 'Student deleted' });
   } catch (err) {
     console.error('Error deleting student:', err);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
