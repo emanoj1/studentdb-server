@@ -16,6 +16,17 @@ router.get('/', verify, async (req, res) => {
   }
 });
 
+// Get a student by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) return res.status(404).send('Student not found');
+    res.json(student);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
+
 // Add a new student
 router.post('/add-student', verify, async (req, res) => {
   const student = new Student({
