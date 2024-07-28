@@ -5,7 +5,6 @@ const express = require('express');
 const router = express.Router();
 const InstitutionAdmin = require('../models/InstitutionAdmin');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 
 // Get all institution admins
@@ -32,15 +31,12 @@ router.get('/:id', async (req, res) => {
 // Fetch current admin profile
 router.get('/profile', auth, async (req, res) => {
   try {
-    console.log('Fetching profile for user ID:', req.user._id);
     const admin = await InstitutionAdmin.findById(req.user._id);
     if (!admin) {
-      console.log('Institution admin not found for ID:', req.user._id);
       return res.status(404).json({ message: 'Institution admin not found' });
     }
     res.json(admin);
   } catch (err) {
-    console.error('Error fetching profile:', err);
     res.status(500).json({ message: err.message });
   }
 });
@@ -57,7 +53,6 @@ router.put('/profile', auth, async (req, res) => {
   }
 
   try {
-    console.log('Updating profile for user ID:', req.user._id);
     const admin = await InstitutionAdmin.findById(req.user._id);
     if (!admin) return res.status(404).json({ message: 'Institution admin not found' });
 
@@ -70,7 +65,6 @@ router.put('/profile', auth, async (req, res) => {
     const updatedAdmin = await admin.save();
     res.json(updatedAdmin);
   } catch (err) {
-    console.error('Error updating profile:', err);
     res.status(500).json({ message: err.message });
   }
 });
@@ -117,5 +111,8 @@ router.delete('/:id', auth, async (req, res) => {
 });
 
 module.exports = router;
+
+
+
 
 
