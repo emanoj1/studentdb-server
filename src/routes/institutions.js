@@ -17,17 +17,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a specific institution admin by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const admin = await InstitutionAdmin.findById(req.params.id);
-    if (!admin) return res.status(404).json({ message: 'Institution admin not found' });
-    res.json(admin);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
 // Fetch current admin profile
 router.get('/profile', auth, async (req, res) => {
   try {
@@ -35,6 +24,17 @@ router.get('/profile', auth, async (req, res) => {
     if (!admin) {
       return res.status(404).json({ message: 'Institution admin not found' });
     }
+    res.json(admin);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get a specific institution admin by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const admin = await InstitutionAdmin.findById(req.params.id);
+    if (!admin) return res.status(404).json({ message: 'Institution admin not found' });
     res.json(admin);
   } catch (err) {
     res.status(500).json({ message: err.message });
