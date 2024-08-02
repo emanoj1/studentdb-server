@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use(cors());
 
 // Import routes
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./routes/auth'); // Includes the password reset route
 const studentRoutes = require('./routes/students');
 const institutionRoutes = require('./routes/institutions');
 
