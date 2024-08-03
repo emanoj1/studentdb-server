@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
 
 // Update admin profile
 router.put('/profile', verify, async (req, res) => {
-  const { name, email, instituteName, instituteRegistrationNumber, password } = req.body;
+  const { name, email, instituteName, instituteRegistrationNumber, password, securityAnswer1, securityAnswer2, securityAnswer3 } = req.body;
 
   try {
     // Find the admin by ID from the token
@@ -61,6 +61,9 @@ router.put('/profile', verify, async (req, res) => {
     admin.email = email || admin.email;
     admin.instituteName = instituteName || admin.instituteName;
     admin.instituteRegistrationNumber = instituteRegistrationNumber || admin.instituteRegistrationNumber;
+    admin.securityAnswer1 = securityAnswer1 || admin.securityAnswer1;
+    admin.securityAnswer2 = securityAnswer2 || admin.securityAnswer2;
+    admin.securityAnswer3 = securityAnswer3 || admin.securityAnswer3;
 
     // Update password if provided
     if (password) {
@@ -106,4 +109,5 @@ router.post('/reset-password', async (req, res) => {
 });
 
 module.exports = router;
+
 

@@ -43,7 +43,7 @@ router.get('/:id', async (req, res) => {
 
 // Update current admin profile
 router.put('/profile', auth, async (req, res) => {
-  const { name, email, password, instituteName, instituteRegistrationNumber } = req.body;
+  const { name, email, password, instituteName, instituteRegistrationNumber, securityAnswer1, securityAnswer2, securityAnswer3 } = req.body;
 
   // Hash the new password if provided
   let hashedPassword;
@@ -61,6 +61,9 @@ router.put('/profile', auth, async (req, res) => {
     admin.password = hashedPassword || admin.password;
     admin.instituteName = instituteName || admin.instituteName;
     admin.instituteRegistrationNumber = instituteRegistrationNumber || admin.instituteRegistrationNumber;
+    admin.securityAnswer1 = securityAnswer1 || admin.securityAnswer1;
+    admin.securityAnswer2 = securityAnswer2 || admin.securityAnswer2;
+    admin.securityAnswer3 = securityAnswer3 || admin.securityAnswer3;
 
     const updatedAdmin = await admin.save();
     res.json(updatedAdmin);
@@ -71,7 +74,7 @@ router.put('/profile', auth, async (req, res) => {
 
 // Update institution admin details
 router.put('/:id', auth, async (req, res) => {
-  const { name, email, password, instituteName, instituteRegistrationNumber } = req.body;
+  const { name, email, password, instituteName, instituteRegistrationNumber, securityAnswer1, securityAnswer2, securityAnswer3 } = req.body;
 
   // Hash the new password if provided
   let hashedPassword;
@@ -89,6 +92,9 @@ router.put('/:id', auth, async (req, res) => {
     admin.password = hashedPassword || admin.password;
     admin.instituteName = instituteName || admin.instituteName;
     admin.instituteRegistrationNumber = instituteRegistrationNumber || admin.instituteRegistrationNumber;
+    admin.securityAnswer1 = securityAnswer1 || admin.securityAnswer1;
+    admin.securityAnswer2 = securityAnswer2 || admin.securityAnswer2;
+    admin.securityAnswer3 = securityAnswer3 || admin.securityAnswer3;
 
     const updatedAdmin = await admin.save();
     res.json(updatedAdmin);
